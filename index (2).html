@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> مكتب محمد الاسدي للبورسلين </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #1a1a1a;
+            --secondary-color: #c9a961;
+            --bg-light: #f9f8f6;
+            --bg-white: #ffffff;
+            --text-dark: #2c2c2c;
+            --text-light: #666666;
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; scroll-behavior: smooth; overflow-x: hidden; }
+
+        header {
+            background: rgba(26, 26, 26, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .header-logo-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--secondary-color); }
+        .logo span { color: var(--secondary-color); font-weight: bold; font-family: 'Playfair Display', serif; }
+
+        nav ul { display: flex; list-style: none; gap: 2rem; align-items: center; }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; transition: var(--transition); }
+        nav a:hover { color: var(--secondary-color); }
+
+        .admin-link { background: var(--secondary-color); color: var(--primary-color) !important; padding: 0.5rem 1.2rem; border-radius: 25px; font-weight: 700; }
+
+        .search-container { max-width: 600px; margin: 100px auto 20px; padding: 0 5%; position: relative; }
+        .search-input {
+            width: 100%;
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: 2px solid #ddd;
+            font-family: 'Cairo';
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+        .search-input:focus { border-color: var(--secondary-color); }
+
+        .hero {
+            height: 50vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover; background-position: center;
+            display: flex; align-items: center; justify-content: center; text-align: center; color: white;
+        }
+
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: #fff; margin-bottom: 1rem; }
+        .hero-btn { display: inline-block; padding: 1rem 2.5rem; background: var(--secondary-color); color: var(--primary-color); text-decoration: none; border-radius: 50px; font-weight: 700; transition: var(--transition); }
+
+        .categories { padding: 1rem 5%; background: #fff; position: sticky; top: 75px; z-index: 900; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .categories-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .category-btn { padding: 0.6rem 1.5rem; border: 1px solid #ddd; background: #fff; border-radius: 30px; cursor: pointer; transition: var(--transition); font-family: 'Cairo'; }
+        .category-btn.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+
+        .products { padding: 3rem 5%; max-width: 1400px; margin: 0 auto; min-height: 400px; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
+
+        .product-card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); cursor: pointer; position: relative; }
+        .product-card:hover { transform: translateY(-10px); }
+        .product-image { height: 280px; overflow: hidden; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .product-card:hover img { scale: 1.1; }
+        
+        .product-info { padding: 1.5rem; position: relative; }
+        .product-code-badge { position: absolute; top: -20px; left: 15px; background: var(--secondary-color); color: #fff; padding: 2px 12px; border-radius: 10px; font-size: 0.8rem; font-weight: bold; }
+        .product-name { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--primary-color); }
+        .product-price { font-weight: 700; color: var(--secondary-color); font-size: 1.2rem; }
+
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; padding: 15px; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: #fff; max-width: 950px; width: 100%; border-radius: 25px; position: relative; max-height: 90vh; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; animation: zoomIn 0.3s ease; }
+        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        .modal-body-content { padding: 2.5rem; }
+        .modal-images-side { padding: 1.5rem; background: #f8f8f8; display: flex; flex-direction: column; gap: 15px; }
+        .main-modal-img { width: 100%; height: 400px; object-fit: contain; border-radius: 15px; background: #fff; }
+        .thumbnail-images { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
+        .thumbnail-images img { width: 70px; height: 70px; object-fit: cover; cursor: pointer; border-radius: 8px; border: 2px solid transparent; }
+
+        .contact-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 1.2rem; background: #25d366; color: #fff; border: none; border-radius: 15px; font-weight: 700; font-size: 1.1rem; cursor: pointer; margin-top: 1.5rem; text-decoration: none; transition: 0.3s; }
+        .close-modal { position: absolute; top: 20px; left: 20px; background: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+
+        @media (max-width: 768px) {
+            .modal-content { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2rem; }
+            .products-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .product-image { height: 180px; }
+            .product-name { font-size: 0.9rem; }
+        }
+
+        .floating-whatsapp { position: fixed; bottom: 25px; right: 25px; background: #25d366; color: #fff; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3); z-index: 1000; text-decoration: none; transition: 0.3s; }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <img src="https://i.postimg.cc/HW9qdqhp/alasdy.jpg" alt="لوغو" class="header-logo-img">
+                <span>مكتب محمد الاسدي</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#home">الرئيسية</a></li>
+                    <li><a href="#products">المنتجات</a></li>
+                    <li><a href="admin.html" class="admin-link">لوحة التحكم</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="search-container" data-aos="fade-up">
+        <input type="text" id="productSearch" class="search-input" placeholder="ابحث باسم المنتج أو الكود اليدوي...">
+    </div>
+
+    <section class="hero" id="home">
+        <div class="hero-content" data-aos="fade-up">
+            <h1>فخامة البورسلين</h1>
+            <p>الجودة والأناقة في مكان واحد</p>
+        </div>
+    </section>
+
+    <div class="categories">
+        <div class="categories-container" id="categories-container">
+            <button class="category-btn active" onclick="filterByCat('all', this)">الكل</button>
+        </div>
+    </div>
+
+    <section class="products" id="products">
+        <div class="products-grid" id="products-container">
+            <div style="grid-column: 1/-1; text-align: center;">جاري تحميل المنتجات...</div>
+        </div>
+    </section>
+
+    <div class="modal" id="product-modal"></div>
+    <a href="https://wa.me/9647700011020" class="floating-whatsapp" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2PjI168hiMnqOW1zMxpsmgx1V4zzrsnI",
+            authDomain: "digital-home-6e0d5.firebaseapp.com",
+            databaseURL: "https://digital-home-6e0d5-default-rtdb.firebaseio.com",
+            projectId: "digital-home-6e0d5",
+            storageBucket: "digital-home-6e0d5.firebasestorage.app",
+            messagingSenderId: "698649453097",
+            appId: "1:698649453097:web:53330e14bfbac890f93238"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        let allProducts = {};
+
+        AOS.init({ duration: 800, once: true });
+
+        // جلب المنتجات
+        onValue(ref(db, 'products'), (snapshot) => {
+            allProducts = snapshot.val() || {};
+            renderProducts(allProducts);
+        });
+
+        // جلب التصنيفات
+        onValue(ref(db, 'categories'), (snapshot) => {
+            const cats = snapshot.val();
+            const container = document.getElementById('categories-container');
+            let html = '<button class="category-btn active" onclick="filterByCat(\'all\', this)">الكل</button>';
+            if (cats) Object.keys(cats).forEach(key => html += `<button class="category-btn" onclick="filterByCat('${key}', this)">${cats[key].name}</button>`);
+            container.innerHTML = html;
+        });
+
+        window.renderProducts = function(products) {
+            const container = document.getElementById('products-container');
+            let html = '';
+            Object.keys(products).forEach(key => {
+                const p = products[key];
+                const displayCode = p.code || "N/A"; // قراءة الكود اليدوي
+                html += `
+                <div class="product-card" onclick="showProductDetails('${key}')" data-aos="zoom-in">
+                    <div class="product-image"><img src="${p.images?.[0] || 'https://via.placeholder.com/400'}" loading="lazy"></div>
+                    <div class="product-info">
+                        <span class="product-code-badge">#${displayCode}</span>
+                        <h3 class="product-name">${p.name}</h3>
+                        <div class="product-price">${Number(p.price).toLocaleString()} د.ع</div>
+                    </div>
+                </div>`;
+            });
+            container.innerHTML = html || '<div style="grid-column:1/-1; text-align:center;">لا توجد منتجات..</div>';
+        };
+
+        // ميزة البحث في الاسم والكود اليدوي
+        document.getElementById('productSearch').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = {};
+            Object.keys(allProducts).forEach(key => {
+                const p = allProducts[key];
+                const pCode = (p.code || "").toLowerCase();
+                if (p.name.toLowerCase().includes(term) || pCode.includes(term)) filtered[key] = p;
+            });
+            renderProducts(filtered);
+        });
+
+        window.filterByCat = function(catId, btn) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (catId === 'all') return renderProducts(allProducts);
+            const filtered = {};
+            Object.keys(allProducts).forEach(k => { if(allProducts[k].category === catId) filtered[k] = allProducts[k]; });
+            renderProducts(filtered);
+        };
+
+        window.showProductDetails = function(id) {
+            const p = allProducts[id];
+            const modal = document.getElementById('product-modal');
+            const displayCode = p.code || "بدون كود";
+            const waMsg = encodeURIComponent(`طلب جديد:\nالمنتج: ${p.name}\nكود المنتج: #${displayCode}\nالسعر: ${p.price} د.ع`);
+            
+            let thumbs = (p.images || []).map(i => `<img src="${i}" onclick="document.getElementById('modal-main-img').src='${i}'">`).join('');
+
+            modal.innerHTML = `
+            <div class="modal-content">
+                <button class="close-modal" onclick="closeModal()">✕</button>
+                <div class="modal-images-side">
+                    <img id="modal-main-img" class="main-modal-img" src="${p.images?.[0] || ''}">
+                    <div class="thumbnail-images">${thumbs}</div>
+                </div>
+                <div class="modal-body-content">
+                    <span style="background:var(--secondary-color); color:#fff; padding:4px 12px; border-radius:8px; font-weight:bold;">#${displayCode}</span>
+                    <h2 style="margin-top:15px;">${p.name}</h2>
+                    <p style="color:#666; margin:1rem 0;">${p.description || 'وصف المنتج متوفر عند الطلب.'}</p>
+                    <div style="font-size:1.8rem; font-weight:800; color:var(--secondary-color);">${Number(p.price).toLocaleString()} د.ع</div>
+                    <p style="margin-top:10px;">الكمية المتوفرة: ${p.quantity || 0}</p>
+                    <a href="https://wa.me/9647700011020?text=${waMsg}" target="_blank" class="contact-btn">
+                        <i class="fab fa-whatsapp"></i> اطلب عبر واتساب
+                    </a>
+                </div>
+            </div>`;
+            modal.style.display = 'flex';
+        };
+
+        window.closeModal = () => document.getElementById('product-modal').style.display = 'none';
+        window.onclick = (e) => { if(e.target.id === 'product-modal') closeModal(); };
+    </script>
+</body>
+</html>
