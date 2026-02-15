@@ -21,28 +21,28 @@
         
         /* تسجيل الدخول */
         .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #1a1a1a; }
-        .login-box { background: white; padding: 2.5rem; border-radius: 15px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .login-box input { width: 100%; padding: 0.8rem; margin: 1rem 0; border: 1px solid #ddd; border-radius: 8px; text-align: center; font-family: 'Cairo'; }
+        .login-box { background: white; padding: 2.5rem; border-radius: 50px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(245, 2, 2, 0.5); }
+        .login-box input { width: 100%; padding: 0.8rem; margin: 1rem 0; border: 2px solid #c01f1f; border-radius: 80px; text-align: center; font-family: 'Cairo'; }
         
         /* لوحة التحكم */
         .admin-container { display: none; }
-        header { background: var(--primary-color); color: white; padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        header { background: var(--primary-color); color: gold; padding: 1rem 10%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 10; z-index: 1000; }
         
-        nav { background: white; padding: 1rem 5%; box-shadow: var(--shadow); margin-bottom: 2rem; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        nav { background: gold; padding: 1rem 2%; box-shadow: var(--shadow); margin-bottom: 3rem; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
         nav button { padding: 0.7rem 1.5rem; border: 1px solid var(--primary-color); background: none; cursor: pointer; border-radius: 25px; font-weight: 600; font-family: 'Cairo'; transition: 0.3s; }
-        nav button.active { background: var(--primary-color); color: white; }
+        nav button.active { background: var(--primary-color); color: gold; }
 
         .section { display: none; max-width: 1200px; margin: 0 auto; padding: 0 15px 50px; }
         .section.active { display: block; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         
         .search-admin { margin-bottom: 20px; width: 100%; max-width: 400px; }
-        .search-admin input { padding: 10px 20px; border-radius: 20px; border: 1px solid #ddd; width: 100%; }
+        .search-admin input { padding: 10px 20px; border-radius: 20px; border: 1px solid blue; width: 100%; }
 
-        form { background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); }
-        .form-group { margin-bottom: 1.2rem; }
-        label { display: block; margin-bottom: 0.5rem; font-weight: 700; color: var(--primary-color); }
-        input, textarea, select { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 0.95rem; }
+        form { background: white; padding: 2rem; border-radius: 20px; box-shadow: var(--shadow); }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 1rem; font-weight: 700; color: var(--primary-color); }
+        input, textarea, select { width: 90%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 0.95rem; }
         
         .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; font-family: 'Cairo'; }
         .btn-primary { background: var(--secondary-color); color: white; }
@@ -71,7 +71,80 @@
             .btn { font-size: 0.85rem; padding: 0.5rem 1rem; }
             th, td { padding: 0.6rem; font-size: 0.85rem; }
         }
+        .button-container {
+        max-width: 400px; /* يمكنك تعديل العرض حسب رغبتك */
+        margin: 20px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* تنسيق زر الدخول الأساسي */
+    .btn-login {
+        width: 100%;
+        padding: 14px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .btn-login:hover {
+        background-color: #0056b3;
+        box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+    }
+
+    /* تنسيق زر الرجوع المطور */
+    .btn-back-home {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(45deg, #6c757d, #495057);
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        box-sizing: border-box; /* لضمان الحواف الدقيقة */
+    }
+
+    /* تأثيرات عند تمرير الماوس على زر الرجوع */
+    .btn-back-home:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        background: linear-gradient(45deg, #495057, #343a40);
+        color: #fff;
+    }
+
+    /* تحريك الأيقونة داخل الزر */
+    .btn-back-home i {
+        font-size: 18px;
+        transition: 0.3s;
+    }
+    .btn-back-home:hover i {
+        transform: scale(1.2) rotate(-10deg); /* حركة مميزة للأيقونة */
+    }
+
+    /* أنميشن النبض الهادئ لجذب الانتباه */
+    @keyframes softPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.01); }
+        100% { transform: scale(1); }
+    }
+    .pulse-effect {
+        animation: softPulse 2s infinite ease-in-out;
+    }
     </style>
+
 </head>
 
 <body>
@@ -80,8 +153,15 @@
             <img src="https://i.postimg.cc/HW9qdqhp/alasdy.jpg" style="width: 80px; border-radius: 50%; margin-bottom: 15px; border: 2px solid var(--secondary-color);">
             <h2>دخول الإدارة</h2>
             <input type="password" id="passwordInput" placeholder="كلمة المرور">
-            <button class="btn btn-primary" style="width:100%" onclick="login()">دخول</button>
-        </div>
+        <div class="button-container">
+            <button class="btn-login" onclick="login()" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+    <i class="fas fa-sign-in-alt"></i> <span>دخول</span>
+</button>
+    <a href="index.html" class="btn-back-home pulse-effect">
+        <i class="fas fa-house-user"></i>
+        <span>الرجوع للصفحة الرئيسية</span>
+    </a>
+</div></div>
     </div>
 
     <div class="admin-container" id="adminPanel">
@@ -120,9 +200,9 @@
 
             <div class="section" id="addProductSection">
                 <form id="addProductForm">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
                         <div class="form-group">
-                            <label>كود المنتج (يدوي)</label>
+                            <label>كود المنتج </label>
                             <input type="text" id="productCode" placeholder="مثال: AS-101" required>
                         </div>
                         <div class="form-group">
@@ -176,7 +256,7 @@
             <h3>تعديل بيانات المنتج</h3>
             <form id="editProductForm">
                 <input type="hidden" id="editProductId">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
                     <div class="form-group">
                         <label>كود المنتج</label>
                         <input type="text" id="editProductCode" required>
@@ -233,7 +313,7 @@
         let allProducts = {};
 
         window.login = function() {
-            if(document.getElementById('passwordInput').value === "1234") {
+            if(document.getElementById('passwordInput').value === "mohammad") {
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
                 loadData();
