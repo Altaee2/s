@@ -10,8 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
     <style>
         :root {
             --primary-color: #1a1a1a;
@@ -21,21 +19,21 @@
             --text-dark: #2c2c2c;
             --text-light: #666666;
             --shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Cairo', sans-serif; background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; scroll-behavior: smooth; overflow-x: hidden; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg-light); color: var(--text-dark); line-height: 1.6; scroll-behavior: smooth; }
 
         header {
-            background: rgba(26, 26, 26, 0.98);
+            background: rgba(26, 26, 26, 0.95);
             backdrop-filter: blur(10px);
-            padding: 0.8rem 5%;
+            padding: 1rem 5%;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
         }
 
         .header-content {
@@ -46,17 +44,240 @@
             margin: 0 auto;
         }
 
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .header-logo-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--secondary-color); }
-        .logo span { color: var(--secondary-color); font-weight: bold; font-family: 'Playfair Display', serif; }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .logo span { color: #fff; }
 
         nav ul { display: flex; list-style: none; gap: 2rem; align-items: center; }
         nav a { color: #fff; text-decoration: none; font-weight: 500; transition: var(--transition); }
         nav a:hover { color: var(--secondary-color); }
 
-        .admin-link { background: var(--secondary-color); color: var(--primary-color) !important; padding: 0.5rem 1.2rem; border-radius: 25px; font-weight: 700; }
+        .admin-link {
+            background: var(--secondary-color);
+            color: var(--primary-color) !important;
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px;
+            font-weight: 700;
+        }
 
-        .search-container { max-width: 600px; margin: 100px auto 20px; padding: 0 5%; position: relative; }
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .hero-content { color: #fff; animation: fadeInUp 0.8s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; margin-bottom: 1rem; }
+        .hero-btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+        .hero-btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(201, 169, 97, 0.4); }
+
+        .categories { padding: 3rem 5%; background: #fff; position: sticky; top: 70px; z-index: 900; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .categories-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .category-btn {
+            padding: 0.6rem 1.5rem;
+            border: 1px solid #ddd;
+            background: #fff;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+        .category-btn.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
+
+        .products { padding: 4rem 5%; max-width: 1400px; margin: 0 auto; }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            animation: fadeIn 0.5s ease;
+        }
+        .product-card:hover { transform: translateY(-10px); }
+
+        .product-image { height: 250px; position: relative; }
+        .product-image img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .product-info { padding: 1.5rem; position: relative; }
+        .product-code-badge { position: absolute; top: -20px; left: 15px; background: var(--secondary-color); color: #fff; padding: 2px 12px; border-radius: 10px; font-size: 0.8rem; font-weight: bold; }
+        .product-name { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--primary-color); }
+        .product-price { font-weight: 700; color: var(--secondary-color); font-size: 1.1rem; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            padding: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            max-width: 900px;
+            width: 100%;
+            border-radius: 20px;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .modal-body-content { padding: 2rem; }
+        .modal-images-side { padding: 1rem; background: #f0f0f0; }
+        .main-modal-img { width: 100%; height: 350px; object-fit: cover; border-radius: 10px; margin-bottom: 10px; }
+        
+        .thumbnail-images { display: flex; gap: 5px; overflow-x: auto; }
+        .thumbnail-images img { width: 60px; height: 60px; object-fit: cover; cursor: pointer; border-radius: 5px; opacity: 0.6; }
+        .thumbnail-images img.active { opacity: 1; border: 2px solid var(--secondary-color); }
+
+        .contact-btn {
+            display: block; width: 100%; padding: 1rem;
+            background: #25d366; color: #fff;
+            border: none; border-radius: 10px;
+            font-weight: 700; font-size: 1.1rem;
+            cursor: pointer; margin-top: 1.5rem;
+            text-align: center; text-decoration: none;
+        }
+
+        .close-modal {
+            position: absolute; top: 15px; left: 15px;
+            background: #fff; border: none; width: 35px; height: 35px;
+            border-radius: 50%; cursor: pointer; font-size: 1.2rem; z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .modal-content { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.2rem; }
+            nav ul { display: none; }
+        }
+
+        .loading-spinner {
+            text-align: center; padding: 50px; grid-column: 1/-1;
+        }
+        /* تنسيق الفوتر الجديد */
+.footer-box .logo-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--secondary-color);
+    margin-bottom: 15px;
+}
+
+.footer-box .business-name {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: block;
+    text-decoration: none;
+}
+
+.footer-box p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    color: #ddd;
+    font-size: 0.95rem;
+}
+
+.footer-box p i {
+    color: var(--secondary-color);
+    width: 20px;
+    text-align: center;
+}
+
+.highlight-text {
+    color: #fff;
+    font-weight: 600;
+    border-right: 3px solid var(--secondary-color);
+    padding-right: 10px;
+    margin: 15px 0;
+}
+
+.social-links a {
+    width: 40px;
+    height: 40px;
+    background: #2a2a2a;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    text-decoration: none;
+    margin-left: 8px;
+}
+
+.social-links a:hover {
+    transform: translateY(-5px);
+    filter: brightness(1.2);
+}
+/* تنسيقات اللوغو في الهيدر */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* مسافة بين الصورة والنص */
+    text-decoration: none;
+}
+
+.header-logo-img {
+    width: 50px; /* حجم اللوغو في الهيدر */
+    height: 50px;
+    border-radius: 50%; /* لجعل الصورة دائرية */
+    object-fit: cover;
+    border: 2px solid var(--secondary-color);
+}
+
+.logo span {
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+/* لضمان تناسق الهيدر في الموبايل */
+@media (max-width: 768px) {
+    .header-logo-img {
+        width: 40px;
+        height: 40px;
+    }
+    .logo {
+        font-size: 1.1rem; /* تصغير النص قليلاً للموبايل */
+    }
+}
+.search-container { max-width: 600px; margin: 100px auto 20px; padding: 0 5%; position: relative; }
         .search-input {
             width: 100%;
             padding: 15px 25px;
@@ -69,105 +290,379 @@
             box-shadow: var(--shadow);
         }
         .search-input:focus { border-color: var(--secondary-color); }
-
-        .hero {
-            height: 50vh;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover; background-position: center;
-            display: flex; align-items: center; justify-content: center; text-align: center; color: white;
-        }
-
-        .hero h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: #fff; margin-bottom: 1rem; }
-        .hero-btn { display: inline-block; padding: 1rem 2.5rem; background: var(--secondary-color); color: var(--primary-color); text-decoration: none; border-radius: 50px; font-weight: 700; transition: var(--transition); }
-
-        .categories { padding: 1rem 5%; background: #fff; position: sticky; top: 75px; z-index: 900; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .categories-container { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        .category-btn { padding: 0.6rem 1.5rem; border: 1px solid #ddd; background: #fff; border-radius: 30px; cursor: pointer; transition: var(--transition); font-family: 'Cairo'; }
-        .category-btn.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); }
-
-        .products { padding: 3rem 5%; max-width: 1400px; margin: 0 auto; min-height: 400px; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
-
-        .product-card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); cursor: pointer; position: relative; }
-        .product-card:hover { transform: translateY(-10px); }
-        .product-image { height: 280px; overflow: hidden; }
-        .product-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .product-card:hover img { scale: 1.1; }
-        
-        .product-info { padding: 1.5rem; position: relative; }
-        .product-code-badge { position: absolute; top: -20px; left: 15px; background: var(--secondary-color); color: #fff; padding: 2px 12px; border-radius: 10px; font-size: 0.8rem; font-weight: bold; }
-        .product-name { font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--primary-color); }
-        .product-price { font-weight: 700; color: var(--secondary-color); font-size: 1.2rem; }
-
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; padding: 15px; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-content { background: #fff; max-width: 950px; width: 100%; border-radius: 25px; position: relative; max-height: 90vh; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; animation: zoomIn 0.3s ease; }
-        @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        .modal-body-content { padding: 2.5rem; }
-        .modal-images-side { padding: 1.5rem; background: #f8f8f8; display: flex; flex-direction: column; gap: 15px; }
-        .main-modal-img { width: 100%; height: 400px; object-fit: contain; border-radius: 15px; background: #fff; }
-        .thumbnail-images { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
-        .thumbnail-images img { width: 70px; height: 70px; object-fit: cover; cursor: pointer; border-radius: 8px; border: 2px solid transparent; }
-
-        .contact-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 1.2rem; background: #25d366; color: #fff; border: none; border-radius: 15px; font-weight: 700; font-size: 1.1rem; cursor: pointer; margin-top: 1.5rem; text-decoration: none; transition: 0.3s; }
-        .close-modal { position: absolute; top: 20px; left: 20px; background: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-
-        @media (max-width: 768px) {
-            .modal-content { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2rem; }
-            .products-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .product-image { height: 180px; }
-            .product-name { font-size: 0.9rem; }
-        }
-
-        .floating-whatsapp { position: fixed; bottom: 25px; right: 25px; background: #25d366; color: #fff; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3); z-index: 1000; text-decoration: none; transition: 0.3s; }
     </style>
 </head>
 
 <body>
     <header>
-        <div class="header-content">
-            <a href="index.html" class="logo">
-                <img src="https://i.postimg.cc/HW9qdqhp/alasdy.jpg" alt="لوغو" class="header-logo-img">
-                <span>مكتب محمد الاسدي</span>
-            </a>
-            <nav>
-                <ul>
-                    <li><a href="#home">الرئيسية</a></li>
-                    <li><a href="#products">المنتجات</a></li>
-                    <li><a href="admin.html" class="admin-link">لوحة التحكم</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <div class="search-container" data-aos="fade-up">
-        <input type="text" id="productSearch" class="search-input" placeholder="ابحث باسم المنتج أو الكود اليدوي...">
+    <div class="header-content">
+        <a href="index.html" class="logo">
+            <img src="https://i.postimg.cc/HW9qdqhp/alasdy.jpg" alt="لوغو مكتب الاسدي" class="header-logo-img">
+            <span>مكتب محمد الاسدي </span> للبورسلين
+        </a>
+        
+        <nav>
+            <ul>
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#products">المنتجات</a></li>
+            </ul>
+        </nav>
     </div>
+</header>
 
     <section class="hero" id="home">
-        <div class="hero-content" data-aos="fade-up">
-            <h1>فخامة البورسلين</h1>
-            <p>الجودة والأناقة في مكان واحد</p>
-        </div>
-    </section>
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+<style>
+    .hero-content {
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+        background: rgba(0, 0, 0, 0.6); /* خلفية داكنة خفيفة لإبراز النص */
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
+        color: white;
+        text-align: center;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+        color: #f1c40f; /* لون ذهبي مميز */
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .sub-title {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        color: #ecf0f1;
+        line-height: 1.6;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin: 25px 0;
+        text-align: right;
+        background: rgba(255,255,255,0.1);
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.95rem;
+    }
+
+    .info-item i {
+        color: #f1c40f;
+        width: 20px;
+    }
+
+    .numbers-box {
+        background: #27ae60;
+        padding: 10px;
+        border-radius: 10px;
+        margin: 15px 0;
+    }
+
+    .hero-btn {
+        display: inline-block;
+        padding: 12px 35px;
+        background: #f1c40f;
+        color: #000;
+        text-decoration: none;
+        border-radius: 50px;
+        font-weight: bold;
+        transition: 0.3s;
+        margin-top: 15px;
+    }
+
+    .hero-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+    }
+
+    .delivery-tag {
+        margin-top: 15px;
+        font-style: italic;
+        color: #2ecc71;
+    }
+</style>
+
+<div class="hero-content" data-aos="zoom-in">
+    <h1>مكتب محمد الأسدي</h1>
+    <p class="sub-title">لبيع كافة أنواع المرمر والكاشي والبورسلين (أرضي وجداري)<br>
+        <b>معمل ليموزا الهندي | وكيل لاصق لإنجاز</b>
+    </p>
+
+    <div class="info-grid">
+        <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>بابل - أبي غرق - قرب المعهد الفني - عمود 223 (طريق السدة)</span>
+        </div>
+        <div class="info-item">
+            <i class="fas fa-hammer"></i>
+            <span>يتوفر لدينا كادر للعمل لكافة الأنواع</span>
+        </div>
+    </div>
+
+    <div class="numbers-box">
+        <i class="fas fa-phone-alt"></i> للحجز والاستفسار: 
+        <span dir="ltr">07730083843 - 07700011020 - 07808037071</span>
+    </div>
+
+    <p class="delivery-tag">
+        <i class="fas fa-truck"></i> يتوفر لدينا خدمة توصيل مع تنسيقات مميزة
+    </p>
+
+    <a href="#products" class="hero-btn">تصفح المنتجات</a>
+</div>
+    </section>
+ <div class="search-container" data-aos="fade-up">
+        <input type="text" id="productSearch" class="search-input" placeholder="ابحث باسم المنتج أو الكود اليدوي...">
+    </div>
     <div class="categories">
         <div class="categories-container" id="categories-container">
-            <button class="category-btn active" onclick="filterByCat('all', this)">الكل</button>
+            <button class="category-btn active" data-category="all">الكل</button>
         </div>
     </div>
 
     <section class="products" id="products">
         <div class="products-grid" id="products-container">
-            <div style="grid-column: 1/-1; text-align: center;">جاري تحميل المنتجات...</div>
+            <div class="loading-spinner">جاري تحميل المنتجات... انتظر قليلًا من فضلك</div>
         </div>
     </section>
-
     <div class="modal" id="product-modal"></div>
-    <a href="https://wa.me/9647700011020" class="floating-whatsapp" target="_blank"><i class="fab fa-whatsapp fa-2x"></i></a>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+   <style>
+    /* تنسيقات الفوتر */
+    footer {
+        background: #1a1a1a;
+        color: #ffffff;
+        padding: 60px 5% 20px;
+        margin-top: 50px;
+        border-top: 3px solid var(--secondary-color);
+    }
+
+    .footer-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+    }
+
+    .footer-box h3 {
+        color: var(--secondary-color);
+        margin-bottom: 25px;
+        font-size: 1.4rem;
+        position: relative;
+        padding-bottom: 10px;
+    }
+
+    .footer-box h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 50px;
+        height: 2px;
+        background: var(--secondary-color);
+    }
+
+    .footer-box p {
+        color: #ccc;
+        font-size: 0.95rem;
+        margin-bottom: 15px;
+        line-height: 1.8;
+    }
+
+    /* أيقونات التواصل الاجتماعي */
+    .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .social-links a {
+        width: 45px;
+        height: 45px;
+        background: #2a2a2a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        font-size: 1.4rem;
+    }
+
+    .social-links a:hover {
+        transform: translateY(-5px);
+        background: var(--secondary-color);
+        color: #fff !important;
+    }
+
+    /* أرقام الهاتف */
+    .contact-info {
+        margin-top: 25px;
+    }
+
+    .contact-info p {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: #fff !important;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .contact-info i {
+        color: var(--secondary-color);
+        font-size: 1.2rem;
+    }
+
+    /* روابط سريعة */
+    .footer-links {
+        list-style: none;
+        padding: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 15px;
+    }
+
+    .footer-links a {
+        color: #ccc;
+        text-decoration: none;
+        transition: 0.3s;
+        display: block;
+    }
+
+    .footer-links a:hover {
+        color: var(--secondary-color);
+        padding-right: 10px;
+    }
+
+    /* الخريطة */
+    .map-container {
+        width: 100%;
+        height: 220px;
+        border-radius: 15px;
+        overflow: hidden;
+        border: 2px solid #333;
+        margin-top: 10px;
+    }
+
+    .footer-bottom {
+        text-align: center;
+        margin-top: 50px;
+        padding-top: 20px;
+        border-top: 1px solid #333;
+        color: #777;
+        font-size: 0.9rem;
+    }
+
+    /* التوافق مع الموبايل */
+    @media (max-width: 768px) {
+        .footer-container {
+            text-align: center;
+        }
+        .footer-box h3::after {
+            right: 50%;
+            transform: translateX(50%);
+        }
+        .social-links {
+            justify-content: center;
+        }
+        .contact-info p {
+            justify-content: center;
+        }
+    }
+</style>
+<a href="https://wa.me/9647700011020" class="floating-whatsapp" target="_blank">
+    <i class="fab fa-whatsapp"></i>
+    <span>تواصل معنا</span>
+</a>
+
+<style>
+.floating-whatsapp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.floating-whatsapp:hover { transform: scale(1.1); background-color: #128c7e; }
+@media (max-width: 768px) { .floating-whatsapp span { display: none; } .floating-whatsapp { border-radius: 50%; padding: 15px; } }
+</style>
+<footer>
+    <div class="footer-container">
+        <div class="footer-box">
+           <a href="index.html" style="text-decoration: none;">
+            <img src="https://i.postimg.cc/HW9qdqhp/alasdy.jpg" alt="لوغو مكتب الاسدي" class="logo-img">
+            <span class="business-name">مكتب الاسدي للبورسلين</span>
+        </a>
+           <div class="highlight-text">الاســـــــــــــــــــــــــدي طريقك الى النجاح</div>
+        
+        <p><i class="fas fa-check-circle"></i> لبيع كافة أنواع المرمر والكاشي والبورسلين أرضي وجداري</p>
+        <p><i class="fas fa-handshake"></i> وكيل معمل لاصق الانجاز</p>
+        <p><i class="fas fa-star"></i> وكيل حصري معمل الليموسا</p>
+        <p><i class="fas fa-award"></i> الاسدي اختيار الصح</p>
+        <p><i class="fas fa-truck"></i> يتوفر لدينا خدمة توصيل</p>
+            <div class="social-links">
+                <a href="https://wa.me/9647808037071" target="_blank" style="color: #25D366;"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://www.facebook.com/share/17vYWzeoQT/" target="_blank" style="color: #1877F2;"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/lsdyllbwrslyn?igsh=Z3Nsdnh4bXh5dm1u" target="_blank" style="color: #E4405F;"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.tiktok.com/@av6_u" target="_blank" style="color: #fff;"><i class="fab fa-tiktok"></i></a>
+                <a href="" target="_blank" style="color: #FF0000;"><i class="fab fa-youtube"></i></a>
+            </div>
+
+            <div class="contact-info">
+                <p><i class="fas fa-phone-alt"></i> 07700011020</p>
+                <p><i class="fas fa-phone-alt"></i> 07730083843</p>
+            </div>
+        </div>
+
+        <div class="footer-box">
+            <h3>روابط سريعة</h3>
+            <ul class="footer-links">
+                <li><a href="#home"><i class="fas fa-chevron-left" style="font-size: 10px; margin-left: 8px;"></i> الرئيسية</a></li>
+                <li><a href="#products"><i class="fas fa-chevron-left" style="font-size: 10px; margin-left: 8px;"></i> المنتجات</a></li>
+                <li><a href="https://wa.me/9647808037071"><i class="fas fa-chevron-left" style="font-size: 10px; margin-left: 8px;"></i> اطلب الآن</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-box">
+            <h3>موقعنا</h3>
+            <p><i class="fas fa-map-marker-alt" style="color: var(--secondary-color); margin-left: 8px;"></i> العراق -   بابل ابي غرق خلف المعهد الفني عمود 223  طريق السده </p>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2732.053037675188!2d44.330745637098396!3d32.55253830799217!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x15591d2b88add839%3A0x679837d57ca26e12!2z2KfZhNin2LPYr9mKINmE2YTYqNmI2LHYs9mE2YrZhg!5e1!3m2!1sar!2siq!4v1771004219330!5m2!1sar!2siq" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2024 معرض الورسلين الفاخر - جميع الحقوق محفوظة</p>
+    </div>
+</footer>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
         import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
@@ -184,31 +679,28 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
-        let allProducts = {};
 
-        AOS.init({ duration: 800, once: true });
-
-        // جلب المنتجات
+        // Fetch Products
         onValue(ref(db, 'products'), (snapshot) => {
-            allProducts = snapshot.val() || {};
-            renderProducts(allProducts);
+            displayProducts(snapshot.val());
         });
 
-        // جلب التصنيفات
+        // Fetch Categories
         onValue(ref(db, 'categories'), (snapshot) => {
-            const cats = snapshot.val();
-            const container = document.getElementById('categories-container');
-            let html = '<button class="category-btn active" onclick="filterByCat(\'all\', this)">الكل</button>';
-            if (cats) Object.keys(cats).forEach(key => html += `<button class="category-btn" onclick="filterByCat('${key}', this)">${cats[key].name}</button>`);
-            container.innerHTML = html;
+            displayCategories(snapshot.val());
         });
 
-        window.renderProducts = function(products) {
+        window.displayProducts = function(products) {
             const container = document.getElementById('products-container');
+            if (!products) {
+                container.innerHTML = '<div class="loading-spinner">لا توجد منتجات حالياً</div>';
+                return;
+            }
             let html = '';
             Object.keys(products).forEach(key => {
                 const p = products[key];
-                const displayCode = p.code || "N/A"; // قراءة الكود اليدوي
+                const displayCode = p.code || "N/A";
+                const img = (p.images && p.images[0]) ? p.images[0] : 'https://via.placeholder.com/400';
                 html += `
                 <div class="product-card" onclick="showProductDetails('${key}')" data-aos="zoom-in">
                     <div class="product-image"><img src="${p.images?.[0] || 'https://via.placeholder.com/400'}" loading="lazy"></div>
@@ -221,59 +713,90 @@
             });
             container.innerHTML = html || '<div style="grid-column:1/-1; text-align:center;">لا توجد منتجات..</div>';
         };
+       document.getElementById('productSearch').addEventListener('keyup', function() {
+    // 1. الحصول على قيمة البحث وتحويلها لنص صغير (لتجنب مشاكل الأحرف)
+    let filter = this.value.toLowerCase();
+    
+    // 2. تحديد جميع كروت المنتجات (تأكد أن منتجاتك تملك كلاس product-card)
+    let products = document.querySelectorAll('.product-card');
 
-        // ميزة البحث في الاسم والكود اليدوي
-        document.getElementById('productSearch').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const filtered = {};
-            Object.keys(allProducts).forEach(key => {
-                const p = allProducts[key];
-                const pCode = (p.code || "").toLowerCase();
-                if (p.name.toLowerCase().includes(term) || pCode.includes(term)) filtered[key] = p;
-            });
-            renderProducts(filtered);
-        });
+    products.forEach(product => {
+        // البحث داخل نص الكارت بالكامل (يشمل الاسم والكود)
+        let text = product.textContent.toLowerCase();
+        
+        if (text.includes(filter)) {
+            // إظهار المنتج مع أنميشن بسيط
+            product.style.display = "";
+            product.style.opacity = "1";
+            product.style.transform = "scale(1)";
+        } else {
+            // إخفاء المنتج
+            product.style.display = "none";
+            product.style.opacity = "0";
+            product.style.transform = "scale(0.95)";
+        }
+    });
+});
+        window.displayCategories = function(categories) {
+            const container = document.getElementById('categories-container');
+            let html = '<button class="category-btn active" data-category="all" onclick="filterByCat(\'all\', this)">الكل</button>';
+            if (categories) {
+                Object.keys(categories).forEach(key => {
+                    html += `<button class="category-btn" onclick="filterByCat('${key}', this)">${categories[key].name}</button>`;
+                });
+            }
+            container.innerHTML = html;
+        };
 
         window.filterByCat = function(catId, btn) {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            if (catId === 'all') return renderProducts(allProducts);
-            const filtered = {};
-            Object.keys(allProducts).forEach(k => { if(allProducts[k].category === catId) filtered[k] = allProducts[k]; });
-            renderProducts(filtered);
+            onValue(ref(db, 'products'), (snapshot) => {
+                const all = snapshot.val();
+                if (catId === 'all') return displayProducts(all);
+                const filtered = {};
+                Object.keys(all).forEach(k => { if(all[k].category === catId) filtered[k] = all[k]; });
+                displayProducts(filtered);
+            }, { once: true });
         };
 
         window.showProductDetails = function(id) {
-            const p = allProducts[id];
-            const modal = document.getElementById('product-modal');
-            const displayCode = p.code || "بدون كود";
-            const waMsg = encodeURIComponent(`طلب جديد:\nالمنتج: ${p.name}\nكود المنتج: #${displayCode}\nالسعر: ${p.price} د.ع`);
-            
-            let thumbs = (p.images || []).map(i => `<img src="${i}" onclick="document.getElementById('modal-main-img').src='${i}'">`).join('');
-
-            modal.innerHTML = `
-            <div class="modal-content">
-                <button class="close-modal" onclick="closeModal()">✕</button>
-                <div class="modal-images-side">
-                    <img id="modal-main-img" class="main-modal-img" src="${p.images?.[0] || ''}">
-                    <div class="thumbnail-images">${thumbs}</div>
-                </div>
-                <div class="modal-body-content">
-                    <span style="background:var(--secondary-color); color:#fff; padding:4px 12px; border-radius:8px; font-weight:bold;">#${displayCode}</span>
-                    <h2 style="margin-top:15px;">${p.name}</h2>
-                    <p style="color:#666; margin:1rem 0;">${p.description || 'وصف المنتج متوفر عند الطلب.'}</p>
-                    <div style="font-size:1.8rem; font-weight:800; color:var(--secondary-color);">${Number(p.price).toLocaleString()} د.ع</div>
-                    <p style="margin-top:10px;">الكمية المتوفرة: ${p.quantity || 0}</p>
-                    <a href="https://wa.me/9647700011020?text=${waMsg}" target="_blank" class="contact-btn">
-                        <i class="fab fa-whatsapp"></i> اطلب عبر واتساب
-                    </a>
-                </div>
-            </div>`;
-            modal.style.display = 'flex';
+            onValue(ref(db, 'products/' + id), (snapshot) => {
+                const p = snapshot.val();
+                if (!p) return;
+                const modal = document.getElementById('product-modal');
+                const displayCode = p.code || "بدون كود"
+                const imgs = p.images || ['https://via.placeholder.com/400'];
+                
+                let thumbs = imgs.map(i => `<img src="${i}" onclick="document.getElementById('modal-main-img').src='${i}'">`).join('');
+                
+                // WhatsApp Link Generator
+                const waMessage = encodeURIComponent(`مرحباً، أود الاستفسار عن منتج: ${p.name} \n الذي كوده #${displayCode}`);
+                const waNumber = "9647700011020"; // ضع رقمك هنا
+                modal.innerHTML = `
+                <div class="modal-content">
+                    <button class="close-modal" onclick="closeModal()">✕</button>
+                    <div class="modal-images-side">
+                        <img id="modal-main-img" class="main-modal-img" src="${imgs[0]}">
+                        <div class="thumbnail-images">${thumbs}</div>
+                    </div>
+                    <div class="modal-body-content">
+                        <span style="background:var(--secondary-color); color:#fff; padding:4px 12px; border-radius:8px; font-weight:bold;">#${displayCode}</span>
+                        <h2>${p.name}</h2>
+                        <p style="color: #666; margin: 1rem 0;">${p.description || 'لا يوجد وصف متاح لهذا المنتج.'}</p>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--secondary-color);">
+                            ${Number(p.price).toLocaleString()} د.ع
+                        </div>
+                        <p style="margin-top: 5px;">الكمية المتوفرة: ${p.quantity || 0}</p>
+                        <a href="https://wa.me/${waNumber}?text=${waMessage}" target="_blank" class="contact-btn">اطلب عبر واتساب</a>
+                    </div>
+                </div>`;
+                modal.style.display = 'flex';
+            }, { once: true });
         };
 
-        window.closeModal = () => document.getElementById('product-modal').style.display = 'none';
-        window.onclick = (e) => { if(e.target.id === 'product-modal') closeModal(); };
+        window.closeModal = function() { document.getElementById('product-modal').style.display = 'none'; };
+        window.onclick = function(e) { if(e.target.id === 'product-modal') closeModal(); };
     </script>
 </body>
 </html>
