@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - مكتب محمد الاسدي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { 
+            --primary-color: #1a1a1a; 
+            --secondary-color: #c9a961; 
+            --bg-light: #f9f8f6; 
+            --danger: #e74c3c; 
+            --success: #27ae60; 
+            --shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        body { font-family: 'Cairo', sans-serif; background-color: var(--bg-light); margin: 0; line-height: 1.6; }
+        
+        /* تسجيل الدخول */
+        .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #1a1a1a; }
+        .login-box { background: white; padding: 2.5rem; border-radius: 50px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 10px 30px rgba(245, 2, 2, 0.5); }
+        .login-box input { width: 100%; padding: 0.8rem; margin: 1rem 0; border: 2px solid #c01f1f; border-radius: 80px; text-align: center; font-family: 'Cairo'; }
+        
+        /* لوحة التحكم */
+        .admin-container { display: none; }
+        header { background: var(--primary-color); color: gold; padding: 1rem 10%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 10; z-index: 1000; }
+        
+        nav { background: gold; padding: 1rem 2%; box-shadow: var(--shadow); margin-bottom: 3rem; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+        nav button { padding: 0.7rem 1.5rem; border: 1px solid var(--primary-color); background: none; cursor: pointer; border-radius: 25px; font-weight: 600; font-family: 'Cairo'; transition: 0.3s; }
+        nav button.active { background: var(--primary-color); color: gold; }
+
+        .section { display: none; max-width: 1200px; margin: 0 auto; padding: 0 15px 50px; }
+        .section.active { display: block; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .search-admin { margin-bottom: 10px; width: 80%; max-width: 400px; }
+        .search-admin input { padding: 10px 20px; border-radius: 20px; border: 1px solid blue; width: 100%; }
+
+        form { background: white; padding: 2rem; border-radius: 20px; box-shadow: var(--shadow); }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 1rem; font-weight: 700; color: var(--primary-color); }
+        input, textarea, select { width: 90%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; font-size: 0.95rem; }
+        
+        .btn { padding: 0.6rem 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.3s; font-family: 'Cairo'; }
+        .btn-primary { background: var(--secondary-color); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-sm { padding: 4px 10px; font-size: 0.85rem; }
+
+        .table-responsive { overflow-x: auto; background: white; border-radius: 12px; box-shadow: var(--shadow); }
+        table { width: 100%; border-collapse: collapse; min-width: 700px; }
+        th, td { padding: 1rem; text-align: right; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; color: var(--primary-color); }
+        
+        .prod-code-tag { background: #eee; padding: 2px 8px; border-radius: 5px; font-size: 0.85rem; font-weight: bold; color: #555; }
+
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; z-index: 2000; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; padding: 2rem; border-radius: 15px; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; position: relative; }
+        .close-modal { position: absolute; top: 15px; left: 15px; font-size: 24px; cursor: pointer; border: none; background: #f0f0f0; width: 35px; height: 35px; border-radius: 50%; }
+        
+        #imagePreview, #editImagePreview { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .preview-img { width: 60px; height: 60px; object-fit: cover; border-radius: 5px; border: 1px solid #ddd; }
+
+        @media (max-width: 768px) {
+            header h3 { font-size: 1rem; }
+            .btn { font-size: 0.85rem; padding: 0.5rem 1rem; }
+            th, td { padding: 0.6rem; font-size: 0.85rem; }
+        }
+        .button-container {
+        max-width: 400px; /* يمكنك تعديل العرض حسب رغبتك */
+        margin: 20px auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* تنسيق زر الدخول الأساسي */
+    .btn-login {
+        width: 100%;
+        padding: 14px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .btn-login:hover {
+        background-color: #0056b3;
+        box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+    }
+
+    /* تنسيق زر الرجوع المطور */
+    .btn-back-home {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(45deg, #6c757d, #495057);
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        box-sizing: border-box; /* لضمان الحواف الدقيقة */
+    }
+
+    /* تأثيرات عند تمرير الماوس على زر الرجوع */
+    .btn-back-home:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        background: linear-gradient(45deg, #495057, #343a40);
+        color: #fff;
+    }
+
+    /* تحريك الأيقونة داخل الزر */
+    .btn-back-home i {
+        font-size: 18px;
+        transition: 0.3s;
+    }
+    .btn-back-home:hover i {
+        transform: scale(1.2) rotate(-10deg); /* حركة مميزة للأيقونة */
+    }
+
+    /* أنميشن النبض الهادئ لجذب الانتباه */
+    @keyframes softPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.01); }
+        100% { transform: scale(1); }
+    }
+    .pulse-effect {
+        animation: softPulse 2s infinite ease-in-out;
+    }
+    </style>
+
+</head>
+
+<body>
+    <div class="login-container" id="loginPage">
+        <div class="login-box">
+            <img src="https://i.postimg.cc/HW9qdqhp/alasdy.jpg" style="width: 80px; border-radius: 50%; margin-bottom: 15px; border: 2px solid var(--secondary-color);">
+            <h2>دخول الإدارة</h2>
+            <input type="password" id="passwordInput" placeholder="كلمة المرور">
+        <div class="button-container">
+            <button class="btn-login" onclick="login()" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+    <i class="fas fa-sign-in-alt"></i> <span>دخول</span>
+</button>
+    <a href="index.html" class="btn-back-home pulse-effect">
+        <i class="fas fa-house-user"></i>
+        <span>الرجوع للصفحة الرئيسية</span>
+    </a>
+</div></div>
+    </div>
+
+    <div class="admin-container" id="adminPanel">
+        <header>
+            <h3>لوحة تحكم مكتب الاسدي</h3>
+            <button class="btn btn-danger" onclick="logout()">خروج <i class="fas fa-sign-out-alt"></i></button>
+        </header>
+
+        <nav>
+            <button class="active" onclick="showSection('products')">المنتجات</button>
+            <button onclick="showSection('addProduct')">إضافة منتج</button>
+            <button onclick="showSection('categories')">الأصناف</button>
+        </nav>
+
+        <div class="admin-content">
+            <div class="section active" id="productsSection">
+                <div class="search-admin">
+                    <input type="text" id="adminSearch" placeholder="بحث بالاسم أو الكود..." oninput="filterAdminProducts()">
+                </div>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الصورة</th>
+                                <th>الكود</th>
+                                <th>الاسم</th>
+                                <th>السعر</th>
+                                <th>الكمية</th>
+                                <th>إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section" id="addProductSection">
+                <form id="addProductForm">
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>كود المنتج </label>
+                            <input type="text" id="productCode" placeholder="مثال: AS-101" required>
+                        </div>
+                        <div class="form-group">
+                            <label>اسم المنتج</label>
+                            <input type="text" id="productName" required>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>الفئة</label>
+                            <select id="productCategory" required></select>
+                        </div>
+                        <div class="form-group">
+                            <label>السعر (د.ع)</label>
+                            <input type="number" id="productPrice" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>الكمية المتوفرة</label>
+                        <input type="number" id="productQuantity" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>صور المنتج (متعدد)</label>
+                        <input type="file" id="productImages" multiple accept="image/*">
+                        <div id="imagePreview"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>الوصف</label>
+                        <textarea id="productDesc" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success" id="submitBtn" style="width: 100%;">حفظ المنتج الجديد</button>
+                </form>
+            </div>
+
+            <div class="section" id="categoriesSection">
+                <form id="addCategoryForm" style="margin-bottom: 20px;">
+                    <label>اسم الفئة الجديدة</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="categoryName" required>
+                        <button type="submit" class="btn btn-primary">إضافة</button>
+                    </div>
+                </form>
+                <div id="categoriesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeEditModal()">✕</button>
+            <h3>تعديل بيانات المنتج</h3>
+            <form id="editProductForm">
+                <input type="hidden" id="editProductId">
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>كود المنتج</label>
+                        <input type="text" id="editProductCode" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الاسم</label>
+                        <input type="text" id="editProductName" required>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>السعر</label>
+                        <input type="number" id="editProductPrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label>الكمية</label>
+                        <input type="number" id="editProductQuantity">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>الفئة</label>
+                    <select id="editProductCategory"></select>
+                </div>
+                <div class="form-group">
+                    <label>تحديث الصور</label>
+                    <div id="editImagePreview"></div>
+                    <input type="file" id="editProductImages" multiple accept="image/*" style="margin-top:10px;">
+                </div>
+                <div class="form-group">
+                    <label>الوصف</label>
+                    <textarea id="editProductDesc" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success" id="updateBtn" style="width: 100%;">تحديث البيانات</button>
+            </form>
+        </div>
+    </div>
+
+   <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+    import { getDatabase, ref, onValue, push, set, remove, update } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+    // إضافة مكتبات Firestore المطلوبة للتحقق من كلمة السر
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyC2PjI168hiMnqOW1zMxpsmgx1V4zzrsnI",
+        authDomain: "digital-home-6e0d5.firebaseapp.com",
+        databaseURL: "https://digital-home-6e0d5-default-rtdb.firebaseio.com",
+        projectId: "digital-home-6e0d5",
+        storageBucket: "digital-home-6e0d5.firebasestorage.app",
+        messagingSenderId: "698649453097",
+        appId: "1:698649453097:web:53330e14bfbac890f93238"
+    };
+
+    // تهيئة Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);   // لقاعدة بيانات المنتجات
+    const fs = getFirestore(app); // لقاعدة بيانات كلمة السر (Firestore)
+    
+    let allProducts = {};
+
+    // دالة تسجيل الدخول المطورة باستخدام Firestore
+    window.login = async function() {
+        const passwordInput = document.getElementById('passwordInput');
+        const enteredPassword = passwordInput.value;
+        const loginBtn = document.querySelector('.btn-login');
+        
+        if (!enteredPassword) {
+            alert("يرجى إدخال كلمة المرور");
+            return;
+        }
+
+        // تغيير حالة الزر أثناء التحقق
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
+
+        try {
+            // الوصول إلى الكولكشن adminConfig والدوكيومنت password في Firestore
+            const docRef = doc(fs, "adminConfig", "password");
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                const correctPassword = data.password; // الحقل الموجود في صورتك
+
+                if (enteredPassword === correctPassword) {
+                    // دخول ناجح
+                    document.getElementById('loginPage').style.display = 'none';
+                    document.getElementById('adminPanel').style.display = 'block';
+                    loadData();
+                } else {
+                    // كلمة مرور خاطئة
+                    alert("⚠️ كلمة المرور غير صحيحة!");
+                    resetLoginBtn();
+                }
+            } else {
+                alert("خطأ: لم يتم العثور على إعدادات الأمان في Firestore!");
+                resetLoginBtn();
+            }
+        } catch (error) {
+            console.error("Login Error:", error);
+            alert("حدث خطأ في الاتصال بقاعدة البيانات");
+            resetLoginBtn();
+        }
+    };
+
+    function resetLoginBtn() {
+        const loginBtn = document.querySelector('.btn-login');
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span>دخول</span>';
+    }
+
+    window.logout = function() { location.reload(); };
+
+    window.showSection = function(id) {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        document.getElementById(id + 'Section').classList.add('active');
+        if (event && event.target) {
+            event.target.classList.add('active');
+        }
+    };
+
+    function loadData() {
+        onValue(ref(db, 'products'), (snapshot) => {
+            allProducts = snapshot.val() || {};
+            renderTable(allProducts);
+        });
+
+        onValue(ref(db, 'categories'), (snapshot) => {
+            const cats = snapshot.val();
+            const addSelect = document.getElementById('productCategory');
+            const editSelect = document.getElementById('editProductCategory');
+            const list = document.getElementById('categoriesList');
+            
+            if (addSelect) addSelect.innerHTML = ''; 
+            if (editSelect) editSelect.innerHTML = ''; 
+            if (list) list.innerHTML = '';
+
+            if(cats) {
+                Object.keys(cats).forEach(key => {
+                    const opt = `<option value="${key}">${cats[key].name}</option>`;
+                    if (addSelect) addSelect.innerHTML += opt;
+                    if (editSelect) editSelect.innerHTML += opt;
+                    if (list) {
+                        list.innerHTML += `<div style="background:white; padding:10px; margin-bottom:10px; display:flex; justify-content:space-between; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.05)">
+                            <span>${cats[key].name}</span>
+                            <button class="btn btn-danger btn-sm" onclick="deleteItem('categories/${key}')">حذف</button>
+                        </div>`;
+                    }
+                });
+            }
+        });
+    }
+
+    function renderTable(products) {
+        const tbody = document.getElementById('productsTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        Object.keys(products).forEach(key => {
+            const p = products[key];
+            tbody.innerHTML += `
+                <tr>
+                    <td><img src="${p.images ? p.images[0] : ''}" class="preview-img"></td>
+                    <td><span class="prod-code-tag">${p.code || 'بدون كود'}</span></td>
+                    <td>${p.name}</td>
+                    <td>${Number(p.price).toLocaleString()}</td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <b>${p.quantity || 0}</b>
+                            <button class="btn btn-danger btn-sm" onclick="quickReduce('${key}')" title="خصم من الكمية">-</button>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" onclick="openEditModal('${key}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteItem('products/${key}')"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`;
+        });
+    }
+
+    window.filterAdminProducts = function() {
+        const term = document.getElementById('adminSearch').value.toLowerCase();
+        const filtered = {};
+        Object.keys(allProducts).forEach(k => {
+            const p = allProducts[k];
+            if(p.name.toLowerCase().includes(term) || (p.code && p.code.toLowerCase().includes(term))) {
+                filtered[k] = p;
+            }
+        });
+        renderTable(filtered);
+    };
+
+    window.quickReduce = function(id) {
+        const amount = prompt("أدخل الكمية المراد خصمها:");
+        if(amount && !isNaN(amount)) {
+            const currentQty = parseInt(allProducts[id].quantity || 0);
+            const newQty = Math.max(0, currentQty - parseInt(amount));
+            update(ref(db, 'products/' + id), { quantity: newQty });
+        }
+    };
+
+    document.getElementById('addProductForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true; btn.innerText = "جاري الحفظ...";
+        
+        const imageUrls = [];
+        const files = document.getElementById('productImages').files;
+        for (let file of files) { imageUrls.push(await toBase64(file)); }
+        
+        const catSelect = document.getElementById('productCategory');
+        const data = {
+            code: document.getElementById('productCode').value,
+            name: document.getElementById('productName').value,
+            price: document.getElementById('productPrice').value,
+            quantity: document.getElementById('productQuantity').value,
+            description: document.getElementById('productDesc').value,
+            category: catSelect.value,
+            categoryName: catSelect.options[catSelect.selectedIndex].text,
+            images: imageUrls
+        };
+
+        push(ref(db, 'products'), data).then(() => {
+            alert("تمت الإضافة بنجاح!");
+            this.reset();
+            document.getElementById('imagePreview').innerHTML = '';
+            btn.disabled = false; btn.innerText = "حفظ المنتج الجديد";
+            showSection('products');
+        });
+    };
+
+    window.openEditModal = function(id) {
+        const p = allProducts[id];
+        document.getElementById('editProductId').value = id;
+        document.getElementById('editProductCode').value = p.code || '';
+        document.getElementById('editProductName').value = p.name;
+        document.getElementById('editProductPrice').value = p.price;
+        document.getElementById('editProductQuantity').value = p.quantity || 0;
+        document.getElementById('editProductDesc').value = p.description || '';
+        document.getElementById('editProductCategory').value = p.category;
+        
+        const preview = document.getElementById('editImagePreview');
+        preview.innerHTML = '';
+        if(p.images) p.images.forEach(img => preview.innerHTML += `<img src="${img}" class="preview-img">`);
+        
+        document.getElementById('editModal').classList.add('active');
+    };
+
+    window.closeEditModal = () => document.getElementById('editModal').classList.remove('active');
+
+    document.getElementById('editProductForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const id = document.getElementById('editProductId').value;
+        const btn = document.getElementById('updateBtn');
+        btn.disabled = true;
+
+        const files = document.getElementById('editProductImages').files;
+        const catSelect = document.getElementById('editProductCategory');
+        let data = {
+            code: document.getElementById('editProductCode').value,
+            name: document.getElementById('editProductName').value,
+            price: document.getElementById('editProductPrice').value,
+            quantity: document.getElementById('editProductQuantity').value,
+            description: document.getElementById('editProductDesc').value,
+            category: catSelect.value,
+            categoryName: catSelect.options[catSelect.selectedIndex].text
+        };
+
+        if (files.length > 0) {
+            const images = [];
+            for (let f of files) images.push(await toBase64(f));
+            data.images = images;
+        }
+
+        update(ref(db, 'products/' + id), data).then(() => {
+            alert("تم التحديث!");
+            closeEditModal();
+            btn.disabled = false;
+        });
+    };
+
+    document.getElementById('addCategoryForm').onsubmit = function(e) {
+        e.preventDefault();
+        push(ref(db, 'categories'), { name: document.getElementById('categoryName').value }).then(() => this.reset());
+    };
+
+    window.deleteItem = (path) => { if(confirm("هل أنت متأكد من الحذف؟")) remove(ref(db, path)); };
+
+    function setupPreview(inputId, previewId) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        input.onchange = function() {
+            const preview = document.getElementById(previewId);
+            preview.innerHTML = '';
+            for(let file of this.files) {
+                const reader = new FileReader();
+                reader.onload = e => preview.innerHTML += `<img src="${e.target.result}" class="preview-img">`;
+                reader.readAsDataURL(file);
+            }
+        };
+    }
+    setupPreview('productImages', 'imagePreview');
+    setupPreview('editProductImages', 'editImagePreview');
+
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+</script>
+</body>
+</html>
